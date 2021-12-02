@@ -30,11 +30,12 @@ function LinkItem({ link, index, showCount, history }) {
 
   function handleDeleteLink() {
     const linkRef = firebaseGoogle.db.collection("links").doc(link.id);
+    console.log("link.id", link.id);
     linkRef
       .delete()
-      .then(() => {
-        console.console.log(`Document with ID: ${link.id} deleted`);
-      })
+      // .then(() => {
+      //   console.console.log(`Document with ID: ${link.id} deleted`);
+      // })
       .catch((err) => {
         console.error("Error deleting document:", err);
       });
@@ -59,7 +60,12 @@ function LinkItem({ link, index, showCount, history }) {
         </div>
         <div className="ml1">
           <div>
-            <a href={link.url} target="_blank" className="black no-underline">
+            <a
+              href={link.url}
+              rel="noreferrer"
+              target="_blank"
+              className="black no-underline"
+            >
               <strong>{link.description}</strong>
             </a>{" "}
             <span className="link">({getDomain(link.url)})</span>

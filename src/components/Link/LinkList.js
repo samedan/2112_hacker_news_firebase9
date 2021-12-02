@@ -8,6 +8,7 @@ function LinkList(props) {
   // const { firebaseGoogle } = useContext(FirebaseContext);
   const [links, setLinks] = useState([]);
   const [cursorInTheDbb, setCursorInTheDbb] = useState(null);
+  const [loading, setLoading] = useState(false);
   const isNewPage = props.location.pathname.includes("new");
   const isTopPage = props.location.pathname.includes("top");
   // curentPage localhost/new/:23
@@ -20,18 +21,21 @@ function LinkList(props) {
 
   function getLinks() {
     const hasCursor = Boolean(cursorInTheDbb);
+    setLoading(true);
     if (isTopPage) {
       return firebaseGoogle.db
         .collection("links")
         .orderBy("voteCount", "desc")
         .limit(LINKS_PER_PAGE)
         .onSnapshot(handleSnapshot);
+      setLoading(false);
     } else if (currentPage === 1) {
       return firebaseGoogle.db
         .collection("links")
         .orderBy("created", "desc")
         .limit(LINKS_PER_PAGE)
         .onSnapshot(handleSnapshot);
+      setLoading(false);
     } else if (hasCursor) {
       return firebaseGoogle.db
         .collection("links")
@@ -39,6 +43,7 @@ function LinkList(props) {
         .startAfter(cursorInTheDbb.created)
         .limit(LINKS_PER_PAGE)
         .onSnapshot(handleSnapshot);
+      setLoading(false);
     }
   }
 
@@ -53,6 +58,7 @@ function LinkList(props) {
     const lastLink = links[links.length - 1];
     // to know from where to start the pagination
     setCursorInTheDbb(lastLink);
+    setLoading(false);
   }
 
   // function renderTopVotedLinks() {
@@ -84,7 +90,7 @@ function LinkList(props) {
   const pageIndex = currentPage ? (currentPage - 1) * LINKS_PER_PAGE + 1 : 0;
 
   return (
-    <div>
+    <div style={{ opacity: loading ? 0.25 : 1 }}>
       {links.map((link, index) => (
         <LinkItem
           key={link.id}

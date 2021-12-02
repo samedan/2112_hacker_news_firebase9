@@ -12,14 +12,14 @@ function Header() {
       <div className="flex">
         <img src="/logo.png" alt="Hooks News Logo" className="logo" />
         <NavLink to="/" className="header-title">
-          Hooks News
+          Hacker News
         </NavLink>
         <NavLink to="/" className="header-link">
-          new
+          newLink
         </NavLink>
         <div className="divider">|</div>
         <NavLink to="/top" className="header-link">
-          top
+          topVotedLinks
         </NavLink>
         <div className="divider">|</div>
         <NavLink to="/search" className="header-link">
